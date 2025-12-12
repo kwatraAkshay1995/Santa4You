@@ -13,6 +13,7 @@ import java.util.Random;
 public class TokenService {
     
     private final VerificationTokenRepository tokenRepository;
+    private final EmailService emailService;
     
     public String generateAndSendToken(String email) {
         String token = generateSixDigitCode();
@@ -21,7 +22,7 @@ public class TokenService {
         VerificationToken verificationToken = new VerificationToken(token, email, expiryDate);
         tokenRepository.save(verificationToken);
         
-        //email service to send token
+        emailService.sendVerificationEmail(email, token);
         return token;
     }
     
