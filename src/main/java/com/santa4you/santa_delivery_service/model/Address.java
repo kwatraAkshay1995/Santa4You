@@ -1,7 +1,6 @@
 package com.santa4you.santa_delivery_service.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.*;
+import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
