@@ -12,5 +12,6 @@ public class SantaLocation {
     private String country;
     private double latitude;
     private double longitude;
+    private SantaStatus status;
     private String estimatedArrival;
 }
