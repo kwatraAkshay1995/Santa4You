@@ -11,14 +11,14 @@ The address has some validation checks.
 You can track where Santa is(simulate and have some fun).
 
 
-Once the application is run in local please follow:
+**Once the application is run in local please follow:**
 
-Application UI: http://localhost:8080/index.html
-Swagger UI: http://localhost:8080/swagger-ui.html
-OpenAPI JSON: http://localhost:8080/v3/api-docs
+**Application UI**: http://localhost:8080/index.html
+**Swagger UI**: http://localhost:8080/swagger-ui.html
+**OpenAPI JSON**: http://localhost:8080/v3/api-docs
 
 
-To Do Items:
+**To Do Items:**
 
 1. Improve logging - not much logging at the moment
 2. Add swagger annotations to the api's
@@ -30,6 +30,6 @@ To Do Items:
 
 
 
-One bug: When you enter the email which doesn't exist, on the update wishlist tab
+**One bug:** When you enter the email which doesn't exist, on the update wishlist tab
 it still sends the verification code in the logs (minor fix but its already past the submission time) but
-when user submits the updated wishlist it return User not found error correctly
+when user submits the updated wishlist it returns User not found error correctly.
