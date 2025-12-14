@@ -12,6 +12,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Version;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -51,4 +52,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Return gift is required as part of the tradition")
     private ReturnGift returnGift;
+
+    @Version
+    private Long version;
 }

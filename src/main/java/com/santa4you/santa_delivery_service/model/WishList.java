@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +29,7 @@ public class WishList {
     @CollectionTable(name = "wish_items")
     @Size(min = 3, max = 3, message = "Wish list must contain exactly 3 items")
     private List<String> items = new ArrayList<>();
+
+    @Version
+    private Long version;
 }
