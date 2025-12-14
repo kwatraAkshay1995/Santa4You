@@ -13,9 +13,9 @@ You can track where Santa is(simulate and have some fun).
 
 **Once the application is run in local please follow:**
 
-**Application UI**: http://localhost:8080/index.html
-**Swagger UI**: http://localhost:8080/swagger-ui.html
-**OpenAPI JSON**: http://localhost:8080/v3/api-docs
+1. **Application UI**: http://localhost:8080/index.html
+2. **Swagger UI**: http://localhost:8080/swagger-ui.html
+3. **OpenAPI JSON**: http://localhost:8080/v3/api-docs
 
 
 **To Do Items:**
@@ -29,7 +29,6 @@ You can track where Santa is(simulate and have some fun).
 7. Add checkstyle and code formatter
 
 
-
 **One bug:** When you enter the email which doesn't exist, on the update wishlist tab
-it still sends the verification code in the logs (minor fix but its already past the submission time) but
-when user submits the updated wishlist it returns User not found error correctly.
+it still sends the verification code (minor fix but its already past the submission time) but
+when user submits the updated wishlist it returns "User not found" error correctly.
