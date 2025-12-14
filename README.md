@@ -12,6 +12,18 @@ You can track where Santa is(simulate and have some fun).
 
 
 Once the application is run in local please follow:
+
 Application UI: http://localhost:8080/index.html
 Swagger UI: http://localhost:8080/swagger-ui.html
 OpenAPI JSON: http://localhost:8080/v3/api-docs
+
+
+To Do Items:
+
+1. Improve logging - not much logging at the moment
+2. Add swagger annotations to the api's
+3. Postgres integration in-place of in-memory db
+4. comprehensive address validations and unit tests
+5. Integration tests for all the flows and load testing to test race conditions and concurrency handling
+6. Global exception handler and spring retry for token generation tests
+7. Add checkstyle and code formatter
