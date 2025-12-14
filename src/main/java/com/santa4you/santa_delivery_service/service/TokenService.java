@@ -13,6 +13,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ public class TokenService {
     
     private final VerificationTokenRepository tokenRepository;
     private final EmailService emailService;
+    private final SecureRandom secureRandom = new SecureRandom();
 
     /**
      * Generates and sends a verification token with automatic retry on duplicate
@@ -83,8 +85,7 @@ public class TokenService {
     }
     
     private String generateSixDigitCode() {
-        Random random = new Random();
-        int code = 100000 + random.nextInt(900000);
+        int code = 100000 + secureRandom.nextInt(900000);
         return String.valueOf(code);
     }
 }
