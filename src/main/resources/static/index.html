@@ -289,7 +289,7 @@
             <div class="grid-2">
                 <div class="form-group">
                     <label>Zip Code *</label>
-                    <input type="text" id="reg-zip" required placeholder="Postal Code (e.g. 560001, NW1 6XE)>
+                    <input type="text" id="reg-zip" required placeholder="Postal Code (e.g. 560001, NW1 6XE)">
                 </div>
                 <div class="form-group">
                     <label>Country *</label>
@@ -374,10 +374,6 @@
                 <div class="info-box">
                     <h3>🌍 Country</h3>
                     <p id="santa-country">-</p>
-                </div>
-                <div class="info-box">
-                    <h3>🎁 Presents Delivered</h3>
-                    <p id="santa-presents">-</p>
                 </div>
                 <div class="info-box">
                     <h3>⏰ Status</h3>
@@ -529,27 +525,31 @@
         }
     });
 
-    // Track Santa
     async function trackSanta() {
-        document.getElementById('loading').classList.add('show');
-        document.getElementById('santa-info').style.display = 'none';
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('santa-info').style.display = 'none';
 
-        try {
-            const response = await fetch(`${API_BASE}/santa/location`);
-            const data = await response.json();
+    try {
+        const response = await fetch(`${API_BASE}/santa/location`);
+        const data = await response.json();
 
-            document.getElementById('santa-city').textContent = data.city;
-            document.getElementById('santa-country').textContent = data.country;
-            document.getElementById('santa-presents').textContent = data.presentsDelivered.toLocaleString();
-            document.getElementById('santa-status').textContent = data.status.replace(/_/g, ' ');
+        console.log('Santa API response:', data);
 
-            document.getElementById('loading').classList.remove('show');
-            document.getElementById('santa-info').style.display = 'block';
-        } catch (error) {
-            showAlert('track-alert', '❌ Failed to track Santa. Please try again.', 'error');
-            document.getElementById('loading').classList.remove('show');
-        }
+        document.getElementById('santa-city').textContent = data.city ?? '-';
+        document.getElementById('santa-country').textContent = data.country ?? '-';
+        document.getElementById('santa-status').textContent =
+            (data.status ?? 'UNKNOWN').replace(/_/g, ' ');
+
+        document.getElementById('loading').classList.remove('show');
+        document.getElementById('santa-info').style.display = 'block';
+
+    } catch (error) {
+        console.error('Track Santa error:', error);
+        showAlert('track-alert', '❌ Failed to track Santa. Please try again.', 'error');
+        document.getElementById('loading').classList.remove('show');
     }
+}
+
 
     // Check ETA
     async function checkETA() {
