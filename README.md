@@ -22,8 +22,14 @@ To Do Items:
 
 1. Improve logging - not much logging at the moment
 2. Add swagger annotations to the api's
-3. Postgres integration in-place of in-memory db
+3. Postgres integration in-place of in-memory db and springboot-mail integration to replace email stimulation
 4. comprehensive address validations and unit tests
 5. Integration tests for all the flows and load testing to test race conditions and concurrency handling
 6. Global exception handler and spring retry for token generation tests
 7. Add checkstyle and code formatter
+
+
+
+One bug: When you enter the email which doesn't exist, on the update wishlist tab
+it still sends the verification code in the logs (minor fix but its already past the submission time) but
+when user submits the updated wishlist it return User not found error correctly
