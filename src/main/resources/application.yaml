@@ -1,7 +1,6 @@
 spring:
   application:
     name: Santa4You Christmas Delivery Service
-
   h2:
     console:
       enabled: true
@@ -14,6 +13,13 @@ spring:
     hibernate:
       ddl-auto: update
       format_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
