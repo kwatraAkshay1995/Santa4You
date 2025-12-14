@@ -9,3 +9,9 @@ Changes are made with a two-factor token by mail. (You can simulate the mail sen
 You declare what you leave for Santa in return, either milk or cookies, as a return gift as by tradition.
 The address has some validation checks.
 You can track where Santa is(simulate and have some fun).
+
+
+Once the application is run in local please follow:
+Application UI: http://localhost:8080/index.html
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI JSON: http://localhost:8080/v3/api-docs
