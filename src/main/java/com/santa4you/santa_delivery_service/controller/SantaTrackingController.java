@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/santa")
+@RequestMapping("/santa")
 @RequiredArgsConstructor
-public class SantaController {
+public class SantaTrackingController {
 
     private final SantaTrackingService santaTrackingService;
 
@@ -31,7 +31,7 @@ public class SantaController {
                 "city", city,
                 "estimatedArrival", eta,
                 "message", "Santa will arrive at " + city + " around " + eta
-        ));
+        )); // TODO: create a separate model
     }
 
     @GetMapping("/route")
