@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.List;
 
 @RestController
-@RequestMapping("/santa")
+@RequestMapping("/api/v1/santa")
 @RequiredArgsConstructor
 public class SantaTrackingController {
 

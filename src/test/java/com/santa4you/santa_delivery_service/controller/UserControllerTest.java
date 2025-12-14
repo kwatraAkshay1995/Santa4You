@@ -76,7 +76,7 @@ class UserControllerTest {
     void registerUser_WithValidRequest_ShouldReturnCreated() throws Exception {
         when(userService.registerUser(any(UserRegistrationRequest.class))).thenReturn(mockUser);
 
-        mockMvc.perform(post("/users/register")
+        mockMvc.perform(post("/api/v1/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validRequest)))
             .andExpect(status().isCreated())
@@ -92,7 +92,7 @@ class UserControllerTest {
         when(userService.registerUser(any(UserRegistrationRequest.class)))
             .thenThrow(new IllegalArgumentException("User with this email already exists"));
 
-        mockMvc.perform(post("/users/register")
+        mockMvc.perform(post("/api/v1/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(validRequest)))
             .andExpect(status().isBadRequest())
@@ -106,7 +106,7 @@ class UserControllerTest {
 
         when(tokenService.generateAndSendToken("testuser@gsail.com")).thenReturn("123456");
 
-        mockMvc.perform(post("/users/request-token")
+        mockMvc.perform(post("/api/v1/users/request-token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(tokenRequest)))
             .andExpect(status().isOk())
@@ -125,7 +125,7 @@ class UserControllerTest {
 
         when(userService.updateWishList(any(WishListUpdateRequest.class))).thenReturn(mockUser);
 
-        mockMvc.perform(put("/users/wishlist")
+        mockMvc.perform(put("/api/v1/users/wishlist")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk())
@@ -144,7 +144,7 @@ class UserControllerTest {
         when(userService.updateWishList(any(WishListUpdateRequest.class)))
             .thenThrow(new IllegalArgumentException("Invalid or expired verification token"));
 
-        mockMvc.perform(put("/users/wishlist")
+        mockMvc.perform(put("/api/v1/users/wishlist")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isBadRequest())
@@ -156,7 +156,7 @@ class UserControllerTest {
     void getUser_WithExistingEmail_ShouldReturnUser() throws Exception {
         when(userService.getUserByEmail("testuser@gsail.com")).thenReturn(mockUser);
 
-        mockMvc.perform(get("/users/testuser@gsail.com"))
+        mockMvc.perform(get("/api/v1/users/testuser@gsail.com"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("Test User"))
             .andExpect(jsonPath("$.email").value("testuser@gsail.com"));
@@ -169,7 +169,7 @@ class UserControllerTest {
         when(userService.getUserByEmail("nonexistent@gsail.com"))
             .thenThrow(new IllegalArgumentException("User not found"));
 
-        mockMvc.perform(get("/users/nonexistent@gsail.com"))
+        mockMvc.perform(get("/api/v1/users/nonexistent@gsail.com"))
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.error").value("User not found"));
     }

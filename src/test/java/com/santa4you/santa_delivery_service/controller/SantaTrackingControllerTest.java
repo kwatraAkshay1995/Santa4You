@@ -29,7 +29,7 @@ class SantaTrackingControllerTest {
         );
         when(santaTrackingService.getCurrentLocation()).thenReturn(location);
 
-        mockMvc.perform(get("/santa/location"))
+        mockMvc.perform(get("/api/v1/santa/location"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.city").value("Tokyo"))
             .andExpect(jsonPath("$.country").value("Japan"))
@@ -47,7 +47,7 @@ class SantaTrackingControllerTest {
         );
         when(santaTrackingService.getCurrentLocation()).thenReturn(location);
 
-        mockMvc.perform(get("/santa/location"))
+        mockMvc.perform(get("/api/v1/santa/location"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status").value("PREPARING"));
     }
@@ -57,7 +57,7 @@ class SantaTrackingControllerTest {
         when(santaTrackingService.getEstimatedArrivalTime("Mumbai"))
             .thenReturn("December 25, 3:00 AM");
 
-        mockMvc.perform(get("/santa/eta").param("city", "Mumbai"))
+        mockMvc.perform(get("/api/v1/santa/eta").param("city", "Mumbai"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.city").value("Mumbai"))
             .andExpect(jsonPath("$.estimatedArrival").value("December 25, 3:00 AM"))
@@ -69,7 +69,7 @@ class SantaTrackingControllerTest {
         when(santaTrackingService.getEstimatedArrivalTime("Paris"))
             .thenReturn("December 24, around midnight");
 
-        mockMvc.perform(get("/santa/eta").param("city", "Paris"))
+        mockMvc.perform(get("/api/v1/santa/eta").param("city", "Paris"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.estimatedArrival").value("December 24, around midnight"));
     }

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santa4You - Christmas Delivery Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .tab-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .wishlist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .santa-location {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box h3 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .token-section {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ffc107;
+        }
+
+        .token-section h3 {
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎅 Santa4You</h1>
+        <p>Track Santa & Manage Your Christmas Wishlist</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('register')">📝 Register</button>
+        <button class="tab-button" onclick="showTab('wishlist')">🎁 Update Wishlist</button>
+        <button class="tab-button" onclick="showTab('track')">🌍 Track Santa</button>
+    </div>
+
+    <!-- Register Tab -->
+    <div id="register-card" class="card active">
+        <h2>Register for Santa's List</h2>
+        <div id="register-alert" class="alert"></div>
+
+        <form id="register-form">
+            <div class="form-group">
+                <label>Name *</label>
+                <input type="text" id="reg-name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="reg-email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Street Address *</label>
+                <input type="text" id="reg-street" required>
+            </div>
+            <div class="form-group">
+                <label>Apartment / Flat No. *</label>
+                <input type="text" id="reg-apartment" required placeholder="Flat 2A / Apt 101">
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>City *</label>
+                    <input type="text" id="reg-city" required>
+                </div>
+                <div class="form-group">
+                    <label>State *</label>
+                    <input type="text" id="reg-state" required>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Zip Code *</label>
+                    <input type="text" id="reg-zip" pattern="\d{5}" required>
+                </div>
+                <div class="form-group">
+                    <label>Country *</label>
+                    <input type="text" id="reg-country" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Wishlist (3 items) *</label>
+                <div class="wishlist-items">
+                    <input type="text" id="wish1" placeholder="Item 1" required>
+                    <input type="text" id="wish2" placeholder="Item 2" required>
+                    <input type="text" id="wish3" placeholder="Item 3" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Leave for Santa *</label>
+                <select id="reg-gift" required>
+                    <option value="">Choose...</option>
+                    <option value="MILK">🥛 Milk</option>
+                    <option value="COOKIES">🍪 Cookies</option>
+                </select>
+            </div>
+
+            <button type="submit">Register 🎄</button>
+        </form>
+    </div>
+
+    <!-- Update Wishlist Tab -->
+    <div id="wishlist-card" class="card">
+        <h2>Update Your Wishlist</h2>
+        <div id="wishlist-alert" class="alert"></div>
+
+        <form id="token-request-form">
+            <div class="form-group">
+                <label>Your Email *</label>
+                <input type="email" id="update-email" required>
+            </div>
+            <button type="submit">Request Verification Code 📧</button>
+        </form>
+
+        <div id="token-section" class="token-section" style="display: none;">
+            <h3>✉️ Check your console logs for the verification code!</h3>
+            <p style="color: #856404; font-size: 0.9em;">In production, this would be sent to your email.</p>
+        </div>
+
+        <form id="wishlist-update-form" style="display: none;">
+            <div class="form-group">
+                <label>Verification Code *</label>
+                <input type="text" id="verification-token" placeholder="Enter 6-digit code" required>
+            </div>
+
+            <div class="form-group">
+                <label>New Wishlist (3 items) *</label>
+                <div class="wishlist-items">
+                    <input type="text" id="update-wish1" placeholder="Item 1" required>
+                    <input type="text" id="update-wish2" placeholder="Item 2" required>
+                    <input type="text" id="update-wish3" placeholder="Item 3" required>
+                </div>
+            </div>
+
+            <button type="submit">Update Wishlist 🎁</button>
+        </form>
+    </div>
+
+    <!-- Track Santa Tab -->
+    <div id="track-card" class="card">
+        <h2>Track Santa's Location</h2>
+        <div id="track-alert" class="alert"></div>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Tracking Santa...</p>
+        </div>
+
+        <div id="santa-info" style="display: none;">
+            <div class="santa-location">
+                <div class="info-box">
+                    <h3>📍 Current Location</h3>
+                    <p id="santa-city">-</p>
+                </div>
+                <div class="info-box">
+                    <h3>🌍 Country</h3>
+                    <p id="santa-country">-</p>
+                </div>
+                <div class="info-box">
+                    <h3>🎁 Presents Delivered</h3>
+                    <p id="santa-presents">-</p>
+                </div>
+                <div class="info-box">
+                    <h3>⏰ Status</h3>
+                    <p id="santa-status">-</p>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Check ETA for Your City</label>
+                <input type="text" id="eta-city" placeholder="Enter your city (e.g., Mumbai, Tokyo)">
+            </div>
+            <button onclick="checkETA()">Check ETA ⏰</button>
+
+            <div id="eta-result" style="margin-top: 20px; display: none;">
+                <div class="info-box">
+                    <h3>🎅 Santa's ETA</h3>
+                    <p id="eta-time">-</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="trackSanta()" style="margin-top: 20px;">Refresh Santa's Location 🔄</button>
+    </div>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:8080/api/v1';
+    let currentEmail = '';
+
+    // Tab switching
+    function showTab(tab) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+
+        event.target.classList.add('active');
+        document.getElementById(tab + '-card').classList.add('active');
+
+        if (tab === 'track') {
+            trackSanta();
+        }
+    }
+
+    // Show alert
+    function showAlert(elementId, message, type) {
+        const alert = document.getElementById(elementId);
+        alert.textContent = message;
+        alert.className = `alert ${type} show`;
+        setTimeout(() => alert.classList.remove('show'), 5000);
+    }
+
+    // Register form
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const data = {
+            name: document.getElementById('reg-name').value,
+            email: document.getElementById('reg-email').value,
+            address: {
+                street: document.getElementById('reg-street').value,
+                city: document.getElementById('reg-city').value,
+                state: document.getElementById('reg-state').value,
+                zipCode: document.getElementById('reg-zip').value,
+                country: document.getElementById('reg-country').value,
+                apartment: document.getElementById('reg-apartment').value
+            },
+            wishItems: [
+                document.getElementById('wish1').value,
+                document.getElementById('wish2').value,
+                document.getElementById('wish3').value
+            ],
+            returnGift: document.getElementById('reg-gift').value
+        };
+
+        try {
+            const response = await fetch(`${API_BASE}/users/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                showAlert('register-alert', '✅ Successfully registered! Check the Update Wishlist tab to modify your list.', 'success');
+                e.target.reset();
+            } else {
+                const error = await response.json();
+                showAlert('register-alert', '❌ ' + (error.error || 'Registration failed'), 'error');
+            }
+        } catch (error) {
+            showAlert('register-alert', '❌ Network error. Please try again.', 'error');
+        }
+    });
+
+    // Request token
+    document.getElementById('token-request-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        currentEmail = document.getElementById('update-email').value;
+
+        try {
+            const response = await fetch(`${API_BASE}/users/request-token`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: currentEmail })
+            });
+
+            if (response.ok) {
+                showAlert('wishlist-alert', '✅ Verification code sent! Check console logs.', 'success');
+                document.getElementById('token-section').style.display = 'block';
+                document.getElementById('wishlist-update-form').style.display = 'block';
+            } else {
+                showAlert('wishlist-alert', '❌ Failed to send code. Check if you are registered.', 'error');
+            }
+        } catch (error) {
+            showAlert('wishlist-alert', '❌ Network error. Please try again.', 'error');
+        }
+    });
+
+    // Update wishlist
+    document.getElementById('wishlist-update-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const data = {
+            email: currentEmail,
+            wishItems: [
+                document.getElementById('update-wish1').value,
+                document.getElementById('update-wish2').value,
+                document.getElementById('update-wish3').value
+            ],
+            verificationToken: document.getElementById('verification-token').value
+        };
+
+        try {
+            const response = await fetch(`${API_BASE}/users/wishlist`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                showAlert('wishlist-alert', '✅ Wishlist updated successfully!', 'success');
+                e.target.reset();
+                document.getElementById('wishlist-update-form').style.display = 'none';
+                document.getElementById('token-section').style.display = 'none';
+            } else {
+                const error = await response.json();
+                showAlert('wishlist-alert', '❌ ' + (error.error || 'Update failed'), 'error');
+            }
+        } catch (error) {
+            showAlert('wishlist-alert', '❌ Network error. Please try again.', 'error');
+        }
+    });
+
+    // Track Santa
+    async function trackSanta() {
+        document.getElementById('loading').classList.add('show');
+        document.getElementById('santa-info').style.display = 'none';
+
+        try {
+            const response = await fetch(`${API_BASE}/santa/location`);
+            const data = await response.json();
+
+            document.getElementById('santa-city').textContent = data.city;
+            document.getElementById('santa-country').textContent = data.country;
+            document.getElementById('santa-presents').textContent = data.presentsDelivered.toLocaleString();
+            document.getElementById('santa-status').textContent = data.status.replace(/_/g, ' ');
+
+            document.getElementById('loading').classList.remove('show');
+            document.getElementById('santa-info').style.display = 'block';
+        } catch (error) {
+            showAlert('track-alert', '❌ Failed to track Santa. Please try again.', 'error');
+            document.getElementById('loading').classList.remove('show');
+        }
+    }
+
+    // Check ETA
+    async function checkETA() {
+        const city = document.getElementById('eta-city').value;
+        if (!city) {
+            showAlert('track-alert', '⚠️ Please enter a city name', 'error');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/santa/eta?city=${encodeURIComponent(city)}`);
+            const data = await response.json();
+
+            document.getElementById('eta-time').textContent = data.estimatedArrival;
+            document.getElementById('eta-result').style.display = 'block';
+        } catch (error) {
+            showAlert('track-alert', '❌ Failed to get ETA', 'error');
+        }
+    }
+</script>
+</body>
+</html>
