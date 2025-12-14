@@ -1,10 +1,15 @@
 package com.santa4you.santa_delivery_service.service;
 
+import com.santa4you.santa_delivery_service.exception.TokenGenerationException;
 import com.santa4you.santa_delivery_service.model.VerificationToken;
 import com.santa4you.santa_delivery_service.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +23,17 @@ public class TokenService {
     
     private final VerificationTokenRepository tokenRepository;
     private final EmailService emailService;
-    
+
+    /**
+     * Generates and sends a verification token with automatic retry on duplicate
+     */
+    @Transactional
+    @Retryable(
+            retryFor = DataIntegrityViolationException.class,
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 100),
+            recover = "recoverTokenGeneration"
+    )
     public String generateAndSendToken(String email) {
         String token = generateSixDigitCode();
         LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(10);
@@ -28,6 +43,14 @@ public class TokenService {
         
         emailService.sendVerificationEmail(email, token);
         return token;
+    }
+
+    @Recover
+    public String recoverTokenGeneration(DataIntegrityViolationException e, String email) {
+        log.error("Failed to generate unique token all retries exhausted: {}", email, e);
+        throw new TokenGenerationException(
+                "Unable to generate verification token. Please try again later."
+        );
     }
 
     /**
