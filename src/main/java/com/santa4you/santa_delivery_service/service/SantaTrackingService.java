@@ -55,7 +55,7 @@ public class SantaTrackingService {
                     90.0,
                     0.0,
                     SantaStatus.PREPARING,
-                    "December 24, 6:00 PM"
+                    "December 25, 11:00 PM"
             );
         }
     }

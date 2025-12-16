@@ -1,6 +1,7 @@
 package com.santa4you.santa_delivery_service.service;
 
 import com.santa4you.santa_delivery_service.model.VerificationToken;
+import com.santa4you.santa_delivery_service.repository.UserRepository;
 import com.santa4you.santa_delivery_service.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -25,6 +27,9 @@ class TokenServiceTest {
 
     @Mock
     private VerificationTokenRepository tokenRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private EmailService emailService;
@@ -45,6 +50,8 @@ class TokenServiceTest {
         when(tokenRepository.save(any(VerificationToken.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
+        when(userRepository.existsByEmail(any(String.class)))
+                .thenReturn(true);
         tokenService.generateAndSendToken(testEmail);
 
         verify(tokenRepository, times(1)).save(tokenCaptor.capture());
@@ -58,12 +65,25 @@ class TokenServiceTest {
 
     @Test
     void generateAndSendToken_ShouldSendEmailWithToken() {
+        when(userRepository.existsByEmail(any(String.class)))
+                .thenReturn(true);
+
         when(tokenRepository.save(any(VerificationToken.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         String generatedToken = tokenService.generateAndSendToken(testEmail);
 
         verify(emailService, times(1)).sendVerificationEmail(testEmail, generatedToken);
+    }
+
+    @Test
+    void generateAndSendToken_ShouldThrowExceptionIfUserNotFound() {
+        when(userRepository.existsByEmail(any(String.class)))
+                .thenThrow(new IllegalArgumentException("User not found"));
+
+        assertThatThrownBy(() -> tokenService.generateAndSendToken(testEmail))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("User not found");
     }
 
     @Test

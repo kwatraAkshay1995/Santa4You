@@ -2,6 +2,7 @@ package com.santa4you.santa_delivery_service.service;
 
 import com.santa4you.santa_delivery_service.exception.TokenGenerationException;
 import com.santa4you.santa_delivery_service.model.VerificationToken;
+import com.santa4you.santa_delivery_service.repository.UserRepository;
 import com.santa4you.santa_delivery_service.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.util.Random;
 public class TokenService {
     
     private final VerificationTokenRepository tokenRepository;
+    private final UserRepository userRepository;
     private final EmailService emailService;
     private final SecureRandom secureRandom = new SecureRandom();
 
@@ -37,6 +39,9 @@ public class TokenService {
             recover = "recoverTokenGeneration"
     )
     public String generateAndSendToken(String email) {
+        if(!userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("User not found");
+        }
         String token = generateSixDigitCode();
         LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(10);
         
