@@ -24,42 +24,25 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
-        try {
-            User user = userService.registerUser(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
+        User user = userService.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     
     @PostMapping("/request-token")
     public ResponseEntity<?> requestToken(@Valid @RequestBody TokenRequest request) {
-        try {
-            tokenService.generateAndSendToken(request.getEmail());
-            return ResponseEntity.ok(Map.of("message", "Verification token sent to " + request.getEmail()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Failed to send token"));
-        }
+        tokenService.generateAndSendToken(request.getEmail());
+        return ResponseEntity.ok(Map.of("message", "Verification token sent to " + request.getEmail()));
     }
     
     @PutMapping("/wishlist")
     public ResponseEntity<?> updateWishList(@Valid @RequestBody WishListUpdateRequest request) {
-        try {
-            User user = userService.updateWishList(request);
-            return ResponseEntity.ok(user);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
-        }
+        User user = userService.updateWishList(request);
+        return ResponseEntity.ok(user);
     }
     
     @GetMapping("/{email}")
     public ResponseEntity<?> getUser(@PathVariable String email) {
-        try {
-            User user = userService.getUserByEmail(email);
-            return ResponseEntity.ok(user);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("error", e.getMessage()));
-        }
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
     }
 }
