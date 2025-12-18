@@ -13,23 +13,23 @@ public class SantaTrackingService {
 
     private final List<SantaLocation> locations = Arrays.asList(
             new SantaLocation("North Pole", "Arctic", 90.0, 0.0,
-                    SantaStatus.STARTING_JOURNEY, "December 24, 6:00 PM"),
+                    SantaStatus.STARTING_JOURNEY, "December 24, 2:00 AM"),
             new SantaLocation("Tokyo", "Japan", 35.6762, 139.6503,
-                    SantaStatus.DELIVERING_PRESENTS, "December 24, 9:00 PM"),
+                    SantaStatus.DELIVERING_PRESENTS, "December 24, 5:00 AM"),
             new SantaLocation("Sydney", "Australia", -33.8688, 151.2093,
-                    SantaStatus.DELIVERING_PRESENTS,  "December 25, 12:00 AM"),
+                    SantaStatus.DELIVERING_PRESENTS,  "December 24, 8:00 AM"),
             new SantaLocation("Mumbai", "India",19.0760, 72.8777,
-                    SantaStatus.DELIVERING_PRESENTS, "December 25, 3:00 AM"),
+                    SantaStatus.DELIVERING_PRESENTS, "December 24, 11:00 AM"),
             new SantaLocation("Moscow", "Russia", 55.7558, 37.6173,
-                    SantaStatus.DELIVERING_PRESENTS, "December 25, 6:00 AM"),
+                    SantaStatus.DELIVERING_PRESENTS, "December 24, 14:00 PM"),
             new SantaLocation("London", "United Kingdom", 51.5074, -0.1278,
-                    SantaStatus.DELIVERING_PRESENTS, "December 25, 9:00 AM"),
+                    SantaStatus.DELIVERING_PRESENTS, "December 24, 17:00 PM"),
             new SantaLocation("New York", "USA", 40.7128, -74.0060,
-                    SantaStatus.DELIVERING_PRESENTS, "December 25, 12:00 PM"),
+                    SantaStatus.DELIVERING_PRESENTS, "December 24, 20:00 PM"),
             new SantaLocation("Los Angeles", "USA", 34.0522, -118.2437,
-                    SantaStatus.FINAL_DELIVERIES, "December 25, 3:00 PM"),
+                    SantaStatus.FINAL_DELIVERIES, "December 25, 23:00 PM"),
             new SantaLocation("North Pole", "Arctic", 90.0, 0.0,
-                    SantaStatus.JOURNEY_COMPLETE, "December 25, 6:00 PM")
+                    SantaStatus.JOURNEY_COMPLETE, "December 25, 00:00 AM")
     );
 
     public SantaLocation getCurrentLocation() {
@@ -55,7 +55,7 @@ public class SantaTrackingService {
                     90.0,
                     0.0,
                     SantaStatus.PREPARING,
-                    "December 25, 11:00 PM"
+                    "December 24, 11:30 PM"
             );
         }
     }

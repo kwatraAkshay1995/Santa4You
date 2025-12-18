@@ -40,14 +40,14 @@ class SantaTrackingServiceTest {
     void getEstimatedArrivalTime_ForMumbai_ShouldReturnFixedTime() {
         String eta = santaTrackingService.getEstimatedArrivalTime("Mumbai");
         
-        assertThat(eta).isEqualTo("December 25, 3:00 AM");
+        assertThat(eta).isEqualTo("December 24, 11:00 AM");
     }
 
     @Test
     void getEstimatedArrivalTime_ForNewYork_ShouldReturnFixedTime() {
         String eta = santaTrackingService.getEstimatedArrivalTime("New York");
         
-        assertThat(eta).isEqualTo("December 25, 12:00 PM");
+        assertThat(eta).isEqualTo("December 24, 20:00 PM");
     }
 
     @Test
@@ -55,8 +55,8 @@ class SantaTrackingServiceTest {
         String etaLower = santaTrackingService.getEstimatedArrivalTime("tokyo");
         String etaUpper = santaTrackingService.getEstimatedArrivalTime("TOKYO");
         
-        assertThat(etaLower).isEqualTo("December 24, 9:00 PM");
-        assertThat(etaUpper).isEqualTo("December 24, 9:00 PM");
+        assertThat(etaLower).isEqualTo("December 24, 5:00 AM");
+        assertThat(etaUpper).isEqualTo("December 24, 5:00 AM");
     }
 
     @Test
