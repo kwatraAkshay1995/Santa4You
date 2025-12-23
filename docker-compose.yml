@@ -1,0 +1,13 @@
+services:
+  santa4you:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: santa4you-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: unless-stopped
